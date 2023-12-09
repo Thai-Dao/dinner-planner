@@ -1,22 +1,28 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
+  const [dinnerPlan, setDinnerPlan] = useState([]);
+
+  const fetchDinnerPlan = async () => {
+    // Update this URL to point to your serverless function
+    const response = await fetch('URL_OF_YOUR_SERVERLESS_FUNCTION');
+    const data = await response.json();
+    setDinnerPlan(data);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Weekly Dinner Plan</h1>
+        <button onClick={fetchDinnerPlan}>Get Dinner Plan</button>
+        {dinnerPlan.length > 0 && (
+          <ul>
+            {dinnerPlan.map((meal, index) => (
+              <li key={index}>{meal}</li>
+            ))}
+          </ul>
+        )}
       </header>
     </div>
   );
